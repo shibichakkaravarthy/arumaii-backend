@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const memberSchema = new mongoose.Schema({
 	name: String,
 	mobile: String,
-	ponits: Number,
+	points: Number,
 	cardNo: String,
 	isPremium: { type: Boolean, default: false },
 	joined: { type: Date, default: new Date() }
