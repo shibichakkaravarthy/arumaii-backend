@@ -17,6 +17,22 @@ exports.addMember = (req, res, next) => {
 	})
 }
 
+exports.updateMember = (req, res, next) => {
+	const { name, mobile, cardNo } = req.body
+	const id = req.params.id
+
+	Member.updateOne({ _id: id }, { name, mobile, cardNo }, (err, updated) => {
+		if (err) {
+			console.log(err)
+			res.status(500).json({msg: 'error while saving changes to database'})
+		}
+
+		res.status(200).json(updated)
+	})
+
+
+}
+
 exports.getMembers = (req, res, next) => {
 	Member.find({}, (err, members) => {
 		if(err) {
