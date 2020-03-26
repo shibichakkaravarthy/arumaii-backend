@@ -3,13 +3,15 @@ const Member = require('../Models/Member.model')
 
 exports.addBill = (req, res, next) => {
 	const { memberId, items, totalAmount, totalPoints } = req.body
-	let oldPoints = 0
+	console.log(req.body)
+        let oldPoints = 0
 
 	let bill = new Bill({ memberId, items, totalAmount, totalPoints })
 
 	bill.save(async (err, bill) => {
 		if(err) {
-			res.status(500).json({ msg: 'Error Ocuured while saving the bill' })
+			console.log(err)
+			res.status(500).json({ msg: 'Error Ocuured while saving the bill', error: err })
 		}
 		
 		await Member.findById(memberId, (err, member) => {
