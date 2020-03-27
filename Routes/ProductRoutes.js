@@ -12,4 +12,6 @@ productsRouter.get('/', ProductController.getProducts)
 
 productsRouter.patch('/update/:id', ProductController.updateProduct)
 
+productsRouter.delete('/delete/:id', ProductController.deleteProduct)
+
 module.exports = productsRouter

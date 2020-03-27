@@ -31,12 +31,24 @@ exports.getProducts = (req, res, next) => {
 exports.updateProduct = (req, res, next) => {
 	const id = req.params.id
 	const { name, price, points, isInven, stock } = req.body
-	
+
 	Product.updateOne({ _id: id }, { name, price, points, isInven, stock }, (err, updated) => {
 		if(err) {
 			res.status(500).json({ msg: 'Error while Updating product', err: err })
 		}
 
 		res.status(200).json({ msg: 'success', updated })
+	})
+}
+
+exports.deleteProduct = (req, res, next) => {
+	const id = req.params.id
+
+	Product.deleteOne({ _id: id }, (err) => {
+		if(err) => {
+			res.status(500).json({ msg: 'There was an error while deleting the product', err })
+		}
+
+		res.status(200).json({ msg: 'Product was deleted' })
 	})
 }
