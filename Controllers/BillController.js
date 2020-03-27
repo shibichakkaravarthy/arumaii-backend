@@ -15,7 +15,9 @@ exports.addBill = (req, res, next) => {
 		}
 		
 		await Member.findById(memberId, (err, member) => {
-			oldPoints = member.points
+			if(member.points) {
+				oldPoints = member.points
+			}
 		})
 
 		console.log(oldPoints)
