@@ -17,13 +17,15 @@ exports.addBill = (req, res, next) => {
 		await Member.findById(memberId, (err, member) => {
 			oldPoints = member.points
 		})
+
+		console.log(oldPoints)
 		
 		Member.updateOne({ _id: memberId }, { points: oldPoints + totalPoints })
 		.then(points => {
 			res.status(200).json({bill, points})
 		})
 		.catch(err => {
-			res.status(500).json({ msg: 'Error Ocuured while saving the points' })
+			res.status(500).json({ msg: 'Error Ocuured while saving the points', err })
 		})
 	})
 }
