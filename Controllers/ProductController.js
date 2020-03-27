@@ -45,7 +45,7 @@ exports.deleteProduct = (req, res, next) => {
 	const id = req.params.id
 
 	Product.deleteOne({ _id: id }, (err) => {
-		if(err) => {
+		if(err) {
 			res.status(500).json({ msg: 'There was an error while deleting the product', err })
 		}
 
