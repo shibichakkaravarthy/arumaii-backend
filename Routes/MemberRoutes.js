@@ -13,6 +13,6 @@ memberRouter.post('/add', memberController.addMember )
 
 memberRouter.get('/', memberController.getMembers)
 
-memberRouter.post('/update/:id', memberController.updateMember)
+memberRouter.patch('/update/:id', memberController.updateMember)
 
 module.exports = memberRouter

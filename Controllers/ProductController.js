@@ -27,3 +27,16 @@ exports.getProducts = (req, res, next) => {
 		res.status(200).json(products)
 	})
 }
+
+exports.updateProduct = (req, res, next) => {
+	const id = req.params.id
+	const { name, price, points, isInven, stock } = req.body
+	
+	Product.updateOne({ _id: id }, { name, price, points, isInven, stock }, (err, updated) => {
+		if(err) {
+			res.status(500).json({ msg: 'Error while Updating product', err: err })
+		}
+
+		res.status(200).json({ msg: 'success', updated })
+	})
+}

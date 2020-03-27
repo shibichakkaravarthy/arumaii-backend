@@ -10,4 +10,6 @@ productsRouter.post('/add', ProductController.addProduct)
 
 productsRouter.get('/', ProductController.getProducts)
 
+productsRouter.patch('/update/:id', ProductController.updateProduct)
+
 module.exports = productsRouter
