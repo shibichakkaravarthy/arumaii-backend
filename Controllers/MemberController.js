@@ -20,6 +20,7 @@ exports.addMember = (req, res, next) => {
 exports.updateMember = (req, res, next) => {
 	const { name, mobile, cardNo } = req.body
 	const id = req.params.id
+	console.log('update Member', req.Body)
 
 	Member.updateOne({ _id: id }, { name, mobile, cardNo }, (err, updated) => {
 		if (err) {
