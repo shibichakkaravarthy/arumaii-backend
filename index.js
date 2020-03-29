@@ -10,6 +10,7 @@ const expenseRouter = require('./Routes/ExpenseRoutes')
 const productsRouter = require('./Routes/ProductRoutes')
 const memberRouter = require('./Routes/MemberRoutes')
 const billRouter = require('./Routes/BillRoutes')
+const dashboardRouter = require('./Routes/DashboardRoutes')
 
 mongoose.connect('mongodb+srv://engine259:triadkube2019@cluster0-5ab7g.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true})
 const db = mongoose.connection
@@ -32,6 +33,7 @@ app.use('/product', productsRouter)
 app.use('/member', memberRouter)
 app.use('/expense', expenseRouter)
 app.use('/bill', billRouter)
+app.use('/dashboard', dashboardRouter)
 
 app.get('/', (req, res, next) => {
 	res.send('Working')

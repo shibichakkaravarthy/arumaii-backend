@@ -1,5 +1,6 @@
 const Bill = require('../Models/Bill.model')
 const Member = require('../Models/Member.model')
+const Product = require('../Models/Product.model')
 
 exports.addBill = (req, res, next) => {
 	const { memberId, items, totalAmount, totalPoints } = req.body
@@ -13,6 +14,13 @@ exports.addBill = (req, res, next) => {
 			console.log(err)
 			res.status(500).json({ msg: 'Error Ocuured while saving the bill', error: err })
 		}
+
+		items.map(async item => {
+			if(item.isInven) {	
+				const oldStock = await Product.findById(item._id)
+				Product.updateOne({_id: item._id}, { stock: oldStock.stock - item.quantity }, (err, stock) => console.log('stock updated'))
+			}
+		})
 		
 		await Member.findById(memberId, (err, member) => {
 			if(member.points) {
