@@ -8,10 +8,11 @@ exports.getMainData = async (req, res, next) => {
 	const bills = await Bill.find({}, null, {sort: {date: -1}})
 	const members = await Member.find({}, null)
 	const products = await Product.find({}, null)
+	const expenses = await Expense.find({}, null)
 
-	console.log('dash data', bills, members, products)
+	console.log('dash data', bills, members, products, expenses)
 
-	res.status(200).json({ bills, members, products })
+	res.status(200).json({ bills, members, products, expenses })
 }
 
 exports.bulkStockInput = (req, res, next) => {
