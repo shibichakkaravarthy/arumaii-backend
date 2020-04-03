@@ -3,11 +3,11 @@ const Member = require('../Models/Member.model')
 const Product = require('../Models/Product.model')
 
 exports.addBill = (req, res, next) => {
-	const { memberId, items, totalAmount, totalPoints } = req.body
+	const { memberId, items, totalAmount, totalPoints, date } = req.body
 	console.log(req.body)
         let oldPoints = 0
 
-	let bill = new Bill({ memberId, items, totalAmount, totalPoints })
+	let bill = new Bill({ memberId, items, totalAmount, totalPoints, date })
 
 	bill.save(async (err, bill) => {
 		if(err) {
