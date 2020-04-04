@@ -21,7 +21,7 @@ exports.addBill = async (req, res, next) => {
 			}
 		})
 
-		let member = await Member.findById(memberId).session(session)
+		let member = await Member.findById(memberId, null, { session })
 
 		member.points += totalPoints
 
@@ -29,12 +29,12 @@ exports.addBill = async (req, res, next) => {
 			member.isPremium = true
 		}
 
-		await member.save().session(session)
+		await member.save({ session })
 
 		items.map(async item => {
 			if(item.isInven) {
 				const oldStock = await Product.findById(item._id)
-				Product.updateOne({_id: item._id}, { stock: oldStock.stock - item.quantity }, (err, stock) => console.log('stock updated')).session(session)
+				Product.updateOne({_id: item._id}, { stock: oldStock.stock - item.quantity }, (err, stock) => console.log('stock updated'))
 			}
 		})
 		await session.commitTransaction()
