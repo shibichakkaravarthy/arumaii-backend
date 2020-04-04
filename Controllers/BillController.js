@@ -22,8 +22,14 @@ exports.addBill = async (req, res, next) => {
 		})
 
 		let member = await Member.findById(memberId, null, { session })
+		
+		if(member.points) {
+			member.points += totalPoints
+		}
 
-		member.points += totalPoints
+		else {
+			member.points = totalPoints
+		}
 
 		if(totalAmount >= 449){
 			member.isPremium = true
