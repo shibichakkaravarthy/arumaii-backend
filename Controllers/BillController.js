@@ -1,50 +1,87 @@
+const mongoose = require('mongoose')
+
 const Bill = require('../Models/Bill.model')
 const Member = require('../Models/Member.model')
 const Product = require('../Models/Product.model')
 
-exports.addBill = (req, res, next) => {
+exports.addBill = async (req, res, next) => {
 	const { memberId, items, totalAmount, totalPoints, date } = req.body
 	console.log(req.body)
-        let oldPoints = 0
+    let oldPoints = 0
+    let session = await mongoose.startSession();
+    session.startTransaction();
 
-	let bill = new Bill({ memberId, items, totalAmount, totalPoints, date })
+    try {
+		let bill = new Bill({ memberId, items, totalAmount, totalPoints, date })
 
-	bill.save(async (err, bill) => {
-		if(err) {
-			console.log(err)
-			res.status(500).json({ msg: 'Error Ocuured while saving the bill', error: err })
+		bill.save(async (err, bill) => {
+			if(err) {
+				console.log(err)
+				res.status(500).json({ msg: 'Error Ocuured while saving the bill', error: err })
+			}
+		}).session(session)
+
+		let member = await Member.findById(memberId).session(session)
+
+		member.points += totalPoints
+
+		if(totalAmount >= 449){
+			member.isPremium = true
 		}
+
+		await member.save().session(session)
 
 		items.map(async item => {
-			if(item.isInven) {	
+			if(item.isInven) {
 				const oldStock = await Product.findById(item._id)
-				Product.updateOne({_id: item._id}, { stock: oldStock.stock - item.quantity }, (err, stock) => console.log('stock updated'))
+				Product.updateOne({_id: item._id}, { stock: oldStock.stock - item.quantity }, (err, stock) => console.log('stock updated')).session(session)
 			}
 		})
-		
-		await Member.findById(memberId, (err, member) => {
-			if(member.points) {
-				oldPoints = member.points
-			}
-		})
+		await session.commitTransaction()
+    }
+	catch(error) {
+		console.log('bill error', error)
+		await session.abortTransaction()
+	}
 
-		console.log(oldPoints)
+	// let bill = new Bill({ memberId, items, totalAmount, totalPoints, date })
 
-		if(totalAmount >= 449) {
-			Member.updateOne({ _id: memberId }, { isPremium: true })
-			.then(member => {
-				console.log('tiktok is a virus')
-			})
-		}
+	// bill.save(async (err, bill) => {
+	// 	if(err) {
+	// 		console.log(err)
+	// 		res.status(500).json({ msg: 'Error Ocuured while saving the bill', error: err })
+	// 	}
+
+	// 	items.map(async item => {
+	// 		if(item.isInven) {
+	// 			const oldStock = await Product.findById(item._id)
+	// 			Product.updateOne({_id: item._id}, { stock: oldStock.stock - item.quantity }, (err, stock) => console.log('stock updated'))
+	// 		}
+	// 	})
 		
-		Member.updateOne({ _id: memberId }, { points: oldPoints + totalPoints })
-		.then(points => {
-			res.status(200).json({bill, points})
-		})
-		.catch(err => {
-			res.status(500).json({ msg: 'Error Ocuured while saving the points', err })
-		})
-	})
+	// 	await Member.findById(memberId, (err, member) => {
+	// 		if(member.points) {
+	// 			oldPoints = member.points
+	// 		}
+	// 	})
+
+	// 	console.log(oldPoints)
+
+	// 	if(totalAmount >= 449) {
+	// 		Member.updateOne({ _id: memberId }, { isPremium: true })
+	// 		.then(member => {
+	// 			console.log('tiktok is a virus')
+	// 		})
+	// 	}
+		
+	// 	Member.updateOne({ _id: memberId }, { points: oldPoints + totalPoints })
+	// 	.then(points => {
+	// 		res.status(200).json({bill, points})
+	// 	})
+	// 	.catch(err => {
+	// 		res.status(500).json({ msg: 'Error Ocuured while saving the points', err })
+	// 	})
+	// })
 }
 
 exports.getBills = (req, res, next) => {
