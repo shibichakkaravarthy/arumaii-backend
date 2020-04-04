@@ -19,7 +19,7 @@ exports.addBill = async (req, res, next) => {
 				console.log(err)
 				res.status(500).json({ msg: 'Error Ocuured while saving the bill', error: err })
 			}
-		}).session(session)
+		})
 
 		let member = await Member.findById(memberId).session(session)
 
