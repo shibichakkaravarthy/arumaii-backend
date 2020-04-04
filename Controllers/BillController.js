@@ -40,7 +40,7 @@ exports.addBill = async (req, res, next) => {
 		items.map(async item => {
 			if(item.isInven) {
 				const oldStock = await Product.findById(item._id)
-				Product.updateOne({_id: item._id}, { stock: oldStock.stock - item.quantity }, (err, stock) => console.log('stock updated'))
+				Product.updateOne({_id: item._id}, { stock: oldStock.stock - item.quantity }, { session } (err, stock) => console.log('stock updated'))
 			}
 		})
 		await session.commitTransaction()
