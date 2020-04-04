@@ -29,6 +29,13 @@ exports.addBill = (req, res, next) => {
 		})
 
 		console.log(oldPoints)
+
+		if(totalAmount >= 449) {
+			Member.updateOne({ _id: memberId }, { isPremium: true })
+			.then(member => {
+				console.log('tiktok is a virus')
+			})
+		}
 		
 		Member.updateOne({ _id: memberId }, { points: oldPoints + totalPoints })
 		.then(points => {
