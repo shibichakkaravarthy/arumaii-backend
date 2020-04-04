@@ -4,6 +4,7 @@ const Expense = require('../Models/Expense.model')
 
 exports.addExpense = (req, res, next) => {
 	const { title, description, date, amount } = req.body
+	console.log('expense request', req.body)
 
 	const expense = new Expense(req.body)
 	expense.save((err, expense) => {
