@@ -13,12 +13,15 @@ exports.addBill = async (req, res, next) => {
 
     try {
 		let bill = new Bill({ memberId, items, totalAmount, totalPoints, date })
+		let resultBill = {}
 
 		bill.save(async (err, bill) => {
 			if(err) {
 				console.log(err)
 				res.status(500).json({ msg: 'Error Ocuured while saving the bill', error: err })
 			}
+
+			resultBill = bill
 		})
 
 		let member = await Member.findById(memberId, null, { session })
@@ -44,6 +47,7 @@ exports.addBill = async (req, res, next) => {
 			}
 		})
 		await session.commitTransaction()
+		res.status(200).json(resultBill)
     }
 	catch(error) {
 		console.log('bill error', error)
