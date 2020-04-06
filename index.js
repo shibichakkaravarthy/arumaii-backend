@@ -39,7 +39,7 @@ app.get('/', (req, res, next) => {
 	res.send('Working')
 })
 
-app.listen(5000, () => {
+app.listen(3000, () => {
 	console.log('Server Up and Running')
 })
 

@@ -5,4 +5,6 @@ const dashboardRouter = Router()
 
 dashboardRouter.get('/main', DashboardController.getMainData)
 
+dashboardRouter.post('/getMemberData', DashboardController.getMembersData)
+
 module.exports = dashboardRouter;
