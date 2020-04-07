@@ -25,6 +25,15 @@ exports.getMembersData = async (req, res, next) => {
 	res.status(200).json([ member1, member2 ])
 }
 
+exports.getMember = async (req, res, next) => {
+	const id = req.params.id
+	let member = await Member.findById(id)
+
+	console.log('member', member)
+
+	res.status(200).json(member)
+}
+
 exports.bulkStockInput = (req, res, next) => {
 	const result = []
 

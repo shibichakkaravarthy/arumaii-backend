@@ -7,4 +7,6 @@ dashboardRouter.get('/main', DashboardController.getMainData)
 
 dashboardRouter.post('/getMemberData', DashboardController.getMembersData)
 
+dashboardRouter.get('/getMember/:id', DashboardController.getMember)
+
 module.exports = dashboardRouter;
