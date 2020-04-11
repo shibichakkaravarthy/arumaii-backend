@@ -52,6 +52,7 @@ exports.addBill = async (req, res, next) => {
 	catch(error) {
 		console.log('bill error', error)
 		await session.abortTransaction()
+		res.status(500).json({ error })
 	}
 
 	// let bill = new Bill({ memberId, items, totalAmount, totalPoints, date })
