@@ -15,4 +15,6 @@ memberRouter.get('/', memberController.getMembers)
 
 memberRouter.patch('/update/:id', memberController.updateMember)
 
+memberRouter.post('/getMemberByMobile', memberController.getMemberByMobile)
+
 module.exports = memberRouter

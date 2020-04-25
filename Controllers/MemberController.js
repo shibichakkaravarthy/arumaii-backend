@@ -34,6 +34,18 @@ exports.updateMember = (req, res, next) => {
 
 }
 
+exports.getMemberByMobile = (req, res, next) => {
+	const { mobile } = req.body
+
+	Member.findOne({ mobile }, (err, member) => {
+		if(err) {
+			res.status(500).json({ msg: 'something worng happened' })
+		}
+
+		res.status(200).json(member)
+	})
+}
+
 exports.getMembers = (req, res, next) => {
 	Member.find({}, (err, members) => {
 		if(err) {
