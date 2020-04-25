@@ -3,6 +3,7 @@ const functions = require('firebase-functions');
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 // import {memberRouter, productsRouter, expenseRouter} from './Routes'
 
@@ -22,6 +23,7 @@ db.once('open', () => {
 const app = express()
 
 app.use(bodyParser.json())
+app.use(cors())
 
 app.get('/', (req, res, next) => {
 	res.send('Working')
