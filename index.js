@@ -8,7 +8,7 @@ const aws = require('aws-sdk')
 const multer = require('multer');
 const multerS3 = require('multer-s3')
 const mime = require('mime-types')
-
+const env = require('dotenv')
 // import {memberRouter, productsRouter, expenseRouter} from './Routes'
 
 const expenseRouter = require('./Routes/ExpenseRoutes')
@@ -25,11 +25,12 @@ db.once('open', () => {
 	console.log('connected to db')
 })
 
+env.config()
 const app = express()
 
 aws.config.update({
-	secretAccessKey: 'bUHe6vN+TA5ei1T0evEcmalCyLOFgg7YS3rE5igb',
-	accessKeyId: 'AKIAI4N5GCT3XNQYPOQA',
+	secretAccessKey:  process.env.AWSSecretKey,
+	accessKeyId: process.env.AWSAccessKeyId,
 	region: 'ap-south-1'
 })
 
@@ -71,7 +72,7 @@ app.get('/', (req, res, next) => {
 })
 
 app.listen(3000, () => {
-	console.log('Server Up and Running')
+	console.log('Server Up and Running', process.env.AWSSecretKey)
 })
 
 // // Create and Deploy Your First Cloud Functions
