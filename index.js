@@ -17,6 +17,7 @@ const memberRouter = require('./Routes/MemberRoutes')
 const billRouter = require('./Routes/BillRoutes')
 const dashboardRouter = require('./Routes/DashboardRoutes')
 const selfieRouter = require('./Routes/SelfieRoutes')
+const smsRouter = require('./Routes/SMSRoutes')
 
 mongoose.connect('mongodb+srv://engine259:triadkube2019@cluster0-5ab7g.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true})
 const db = mongoose.connection
@@ -33,6 +34,11 @@ aws.config.update({
 	accessKeyId: process.env.AWSAccessKeyId,
 	region: 'ap-south-1'
 })
+
+  var params = {
+  Message: 'Text Msg from backend', /* required */
+  TopicArn: 'arn:aws:sns:ap-south-1:744153746229:arumaii-offers'
+};
 
 const s3 = new aws.S3()
 
@@ -66,13 +72,14 @@ app.use('/expense', expenseRouter)
 app.use('/bill', billRouter)
 app.use('/dashboard', dashboardRouter)
 app.use('/selfie', selfieRouter)
+app.use('/sms', smsRouter)
 
 app.get('/', (req, res, next) => {
 	res.send('Working')
 })
 
 app.listen(3000, () => {
-	console.log('Server Up and Running', process.env.AWSSecretKey)
+	console.log('Server Up and Running')
 })
 
 // // Create and Deploy Your First Cloud Functions
